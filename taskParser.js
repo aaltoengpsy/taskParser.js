@@ -3,8 +3,8 @@ import tasks from './exampletasks?raw'
 
 /* 
 // Node in general, but this cannot be used in clientside code
-import fs from 'node:fs'
-const tasks = fs.readFileSync('./tasks').toString()
+const fs = require('fs')
+const tasks = fs.readFileSync('./exampletasks').toString()
 */
 
 const loadTasks = () => {
