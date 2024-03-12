@@ -94,6 +94,7 @@ Now you just need to code the part where everything is rendered ...and the data 
 [
     {
         title: "Task 1",
+        type: "task",
         content: [
             "This is a paragraph.",
             "This is another paragraph"
@@ -101,6 +102,7 @@ Now you just need to code the part where everything is rendered ...and the data 
     },
     {
         title: "Questionnaire 1",
+        type: "questionnaire",
         content: [
             {
                 question: "What did you think of the task?",

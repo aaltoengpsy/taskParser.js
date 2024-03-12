@@ -18,10 +18,11 @@ const loadTasks = () => {
       
       // Parse step title
       const stepTitle = rs.split('>')[0].trim()
+      const stepType = stepTitle.toLowerCase().includes('task') ? 'task' : 'questionnaire'
 
       // Parse step contents (>)
       let stepContent = ''
-      if (stepTitle.toLowerCase().includes('task')) {
+      if (stepType === 'task') {
         // For tasks, split into paragraphs
         stepContent = rs.split('>').slice(1).map((p) => p.trim())
       } else {
@@ -61,6 +62,7 @@ const loadTasks = () => {
 
       return {
         title: stepTitle,
+        type: stepType,
         content: stepContent
       }
     })
