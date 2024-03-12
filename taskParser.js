@@ -24,7 +24,22 @@ const loadTasks = () => {
       let stepContent = ''
       if (stepType === 'task') {
         // For tasks, split into paragraphs
-        stepContent = rs.split('>').slice(1).map((p) => p.trim())
+        const paragraphs = rs.split('>').slice(1).map((p) => p.trim())
+
+        stepContent = paragraphs.map((p) => {
+          if (p.substring(0, 1) === '!') {
+            return {
+              type: 'image',
+              url: String(p.split('(')[1].split(')')[0].trim())
+            }
+          } else {
+            return {
+              type: 'text',
+              text: p
+            }
+          }
+        })
+
       } else {
         // For questions steps, separate the questions (>)
         const rawQuestions = rs.split('>').slice(1)

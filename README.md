@@ -18,7 +18,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 # Task 2: Instructions
 ```
 
-- `>` Marks a **paragraph** (`task` step) or a **question** (`questionnaire` step)
+- `>` Marks a **paragraph** (**task** step) or a **question** (**questionnaire** step)
 
 ```md
 # Task 1
@@ -45,6 +45,19 @@ You can find an example task/questionnaire file [here](./exampletasks).
 
 ...
 
+```
+
+- You can include images in **task** steps. Just use the markdown syntax (e.g. `![](image.png)`), but make sure to precede this with the paragraph indicator (`>`)
+    - Be aware that depending on how you render your frontend, the image file may need to be in a specific location. For example in Vite, images should be placed in the `public/` directory at the root of the repository.
+
+```md
+# Task 1
+
+> This is an introduction to a task. Below this paragraph, you will see an image.
+
+> ![](exampleimage.png)
+
+> This is a second paragraph, maybe filling in some details regarding the image or the task instructions.
 ```
 
 - `$` is used to indicate question parameters in **question**s. This can currently be `text`, `number`, `option` or `likert`.
@@ -96,8 +109,18 @@ Now you just need to code the part where everything is rendered ...and the data 
         title: "Task 1",
         type: "task",
         content: [
-            "This is a paragraph.",
-            "This is another paragraph"
+            {
+                type: "text",
+                text: "This is a paragraph."
+            },
+            {
+                type: "image",
+                url: "exampleimage.png"
+            },
+            {
+                type: "text",
+                text: "This is a second paragraph."
+            }
         ]
     },
     {
