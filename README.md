@@ -62,8 +62,9 @@ You can find an example task/questionnaire file [here](./exampletasks).
 > This is a second paragraph, maybe filling in some details regarding the image or the task instructions.
 ```
 
-- `$` is used to indicate question parameters in **question**s. This can currently be `text`, `number`, `option` or `likert`.
-    - **Question**s of `option` and `likert` type should include additional parameters separated by commas (`,`).
+- `$` is used to indicate question parameters in **question**s. This can currently be `text`, `number`, `slider`, `option` or `likert`.
+    - **Question**s of `range`, `option` and `likert` type should include additional parameters separated by commas (`,`).
+        - `range` requires a minimum and a maximum value.
         - There can be as many options to an `option` question as you'd like.
         - `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
 
@@ -81,6 +82,10 @@ $number
 > Indicate your agreement with the following statement: I would like to try again in the future.
 
 $likert, 1, 7, Strongly Disagree, Strongly Agree
+
+> How confident would you be in your ability to do at least as well next time?
+
+$slider, 0, 100
 
 > (Optional) Provide general thoughts about the task.
 
@@ -157,6 +162,12 @@ Now you just need to code the part where everything is rendered ...and the data 
                 question: "Were the instructions clear?",
                 type: "option",
                 options: ["Yes", "No", "Maybe"]
+            },
+            {
+                question: "Please rate the task:",
+                type: "slider",
+                min: 0,
+                max: 100
             }
         ]
     }

@@ -22,6 +22,11 @@
     1, 7,
     very bad, very good
 
+> How confident are you in your ability to do at least as well next time?
+
+    $slider,
+    0, 100
+
 > How do you feel right now?
 
     $text
