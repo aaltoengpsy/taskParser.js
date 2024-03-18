@@ -34,7 +34,7 @@ const loadTasks = () => {
             }
           } else {
             return {
-              type: 'text',
+              type: 'paragraph',
               text: p
             }
           }
@@ -46,6 +46,16 @@ const loadTasks = () => {
 
         // Parse question contents ($)
         const questions = rawQuestions.map((rq) => {
+          // Parse images in questionnaires
+          if (rq.trim().startsWith('!')) {
+            return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}
+          }
+
+          // Parse paragraphs in questionnaires
+          if (rq.split('$').length === 1) {
+            return { text: String(rq.trim()), type: 'paragraph'}
+          }
+
           const questionText = rq.split('$')[0].trim()
           const questionType = rq.split('$')[1].trim().split(',')[0].trim()
 

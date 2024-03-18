@@ -18,7 +18,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 # Task 2: Instructions
 ```
 
-- `>` Marks a **paragraph** (**task** step) or a **question** (**questionnaire** step)
+- `>` Marks a **paragraph** (both **task** and **questionnaire** step) or a **question** (**questionnaire** step only)
 
 ```md
 # Task 1
@@ -28,6 +28,8 @@ You can find an example task/questionnaire file [here](./exampletasks).
 > This is the second paragraph of your task instructions.
 
 # Questionnaire 1
+
+> This is a paragraph maybe shedding a bit more light on what the questionnaire is about. Alternatively, feel free to give additional instructions here!
 
 > Were the instructions easy to understand?
 
@@ -47,7 +49,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 
 ```
 
-- You can include images in **task** steps. Just use the markdown syntax (e.g. `![](image.png)`), but make sure to precede this with the paragraph indicator (`>`)
+- You can include images in both **task** and **questionnaire** steps. Just use the markdown syntax (e.g. `![](image.png)`), but make sure to precede this with the paragraph indicator (`>`)
     - Be aware that depending on how you render your frontend, the image file may need to be in a specific location. For example in Vite, images should be placed in the `public/` directory at the root of the repository.
 
 ```md
@@ -110,7 +112,7 @@ Now you just need to code the part where everything is rendered ...and the data 
         type: "task",
         content: [
             {
-                type: "text",
+                type: "paragraph",
                 text: "This is a paragraph."
             },
             {
@@ -118,7 +120,7 @@ Now you just need to code the part where everything is rendered ...and the data 
                 url: "exampleimage.png"
             },
             {
-                type: "text",
+                type: "paragraph",
                 text: "This is a second paragraph."
             }
         ]
@@ -127,6 +129,14 @@ Now you just need to code the part where everything is rendered ...and the data 
         title: "Questionnaire 1",
         type: "questionnaire",
         content: [
+            {
+                text: "These are the initial instructions for filling out the questionnaire.",
+                type: "paragraph"
+            },
+            {
+                url: "exampleimage.png",
+                type: "image"
+            },
             {
                 question: "What did you think of the task?",
                 type: "text"

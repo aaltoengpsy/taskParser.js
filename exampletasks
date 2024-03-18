@@ -8,6 +8,10 @@
 
 # Questionnaire 1
 
+> This is an introductory paragraph to the following questionnaire. Maybe the image below is somehow related to the task?
+
+> ![](exampleimage.png)
+
 > How many times did you attempt the task?
 
     $number
