@@ -18,85 +18,64 @@ const loadTasks = () => {
       
       // Parse step title
       const stepTitle = rs.split('>')[0].trim()
-      const stepType = stepTitle.toLowerCase().includes('task') ? 'task' : 'questionnaire'
 
       // Parse step contents (>)
       let stepContent = ''
-      if (stepType === 'task') {
-        // For tasks, split into paragraphs
-        const paragraphs = rs.split('>').slice(1).map((p) => p.trim())
+      // First, separate into paragraphs (incl. questions) (>)
+      const rawQuestions = rs.split('>').slice(1)
 
-        stepContent = paragraphs.map((p) => {
-          if (p.substring(0, 1) === '!') {
-            return {
-              type: 'image',
-              url: String(p.split('(')[1].split(')')[0].trim())
-            }
-          } else {
-            return {
-              type: 'paragraph',
-              text: p
-            }
+      // Parse question contents ($)
+      const questions = rawQuestions.map((rq) => {
+        // Parse images in questionnaires
+        if (rq.trim().startsWith('!')) {
+          return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}
+        }
+
+        // Parse paragraphs in questionnaires
+        if (rq.split('$').length === 1) {
+          return { text: String(rq.trim()), type: 'paragraph'}
+        }
+
+        const questionText = rq.split('$')[0].trim()
+        const questionType = rq.split('$')[1].trim().split(',')[0].trim()
+
+        // Parse additional options if present (,)
+        if (questionType === 'likert') {
+          const params = rq.split('$')[1].trim().split(',').slice(1)
+
+          return {
+            question: questionText,
+            type: questionType,
+            min: parseInt(params[0].trim()),
+            max: parseInt(params[1].trim()),
+            minLabel: params[2].trim(),
+            maxLabel: params[3].trim()
           }
-        })
-
-      } else {
-        // For questions steps, separate the questions (>)
-        const rawQuestions = rs.split('>').slice(1)
-
-        // Parse question contents ($)
-        const questions = rawQuestions.map((rq) => {
-          // Parse images in questionnaires
-          if (rq.trim().startsWith('!')) {
-            return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}
+        } else if (questionType === 'option') {
+          return {
+            question: questionText,
+            type: questionType,
+            options: rq.split('$')[1].trim().split(',').slice(1).map((o) => o.trim())
           }
+        } else if (questionType === 'slider') {
+          const params = rq.split('$')[1].trim().split(',').slice(1)
 
-          // Parse paragraphs in questionnaires
-          if (rq.split('$').length === 1) {
-            return { text: String(rq.trim()), type: 'paragraph'}
+          return {
+            question: questionText,
+            type: questionType,
+            min: parseInt(params[0].trim()),
+            max: parseInt(params[1].trim())
           }
+        }
 
-          const questionText = rq.split('$')[0].trim()
-          const questionType = rq.split('$')[1].trim().split(',')[0].trim()
+        return { question: questionText, type: questionType }
+      })
 
-          // Parse additional options if present (,)
-          if (questionType === 'likert') {
-            const params = rq.split('$')[1].trim().split(',').slice(1)
-
-            return {
-              question: questionText,
-              type: questionType,
-              min: parseInt(params[0].trim()),
-              max: parseInt(params[1].trim()),
-              minLabel: params[2].trim(),
-              maxLabel: params[3].trim()
-            }
-          } else if (questionType === 'option') {
-            return {
-              question: questionText,
-              type: questionType,
-              options: rq.split('$')[1].trim().split(',').slice(1).map((o) => o.trim())
-            }
-          } else if (questionType === 'slider') {
-            const params = rq.split('$')[1].trim().split(',').slice(1)
-
-            return {
-              question: questionText,
-              type: questionType,
-              min: parseInt(params[0].trim()),
-              max: parseInt(params[1].trim())
-            }
-          }
-
-          return { question: questionText, type: questionType }
-        })
-
-        stepContent = questions
-      }
+      stepContent = questions
+      
 
       return {
         title: stepTitle,
-        type: stepType,
         content: stepContent
       }
     })

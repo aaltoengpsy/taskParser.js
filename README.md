@@ -8,7 +8,7 @@ Intended for when you need to integrate questionnaires into a web application. *
 
 You can find an example task/questionnaire file [here](./exampletasks).
 
-- `#` Marks the beginning of a **step**. Everything between this and the next `#` or `>` is considered the step title. The step title should include the string `task` or `questionnaire`. Note that how you render these is up to you.
+- `#` Marks the beginning of a **step**. Everything between this and the next `#` or `>` is considered the step title.
 
 ```md
 # Task 1
@@ -18,7 +18,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 # Task 2: Instructions
 ```
 
-- `>` Marks a **paragraph** (both **task** and **questionnaire** step) or a **question** (**questionnaire** step only)
+- `>` Marks a **paragraph** (or a **question** if additional parameters, explained below, are included)
 
 ```md
 # Task 1
@@ -49,7 +49,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 
 ```
 
-- You can include images in both **task** and **questionnaire** steps. Just use the markdown syntax (e.g. `![](image.png)`), but make sure to precede this with the paragraph indicator (`>`)
+- You can include images. Just use the markdown syntax (e.g. `![](image.png)`), but make sure to precede this with the paragraph indicator (`>`)
     - Be aware that depending on how you render your frontend, the image file may need to be in a specific location. For example in Vite, images should be placed in the `public/` directory at the root of the repository.
 
 ```md
@@ -62,7 +62,7 @@ You can find an example task/questionnaire file [here](./exampletasks).
 > This is a second paragraph, maybe filling in some details regarding the image or the task instructions.
 ```
 
-- `$` is used to indicate question parameters in **question**s. This can currently be `text`, `number`, `slider`, `option` or `likert`.
+- `$` is used to indicate additional parameters when a paragraph is meant to act as a **question**. Currently available **question** types are `text`, `number`, `slider`, `option` and `likert`.
     - **Question**s of `range`, `option` and `likert` type should include additional parameters separated by commas (`,`).
         - `range` requires a minimum and a maximum value.
         - There can be as many options to an `option` question as you'd like.
@@ -92,7 +92,7 @@ $slider, 0, 100
 $text
 ```
 
-Note that you can add line breaks, tabs and spaces as you see fit to make the file more readable to you. These are trimmed out when parsing the file.
+> **N.B.** that you can add line breaks, tabs and spaces as you see fit to make the file more readable to you. These are trimmed out when parsing the file.
 
 ## Usage
 
@@ -114,7 +114,6 @@ Now you just need to code the part where everything is rendered ...and the data 
 [
     {
         title: "Task 1",
-        type: "task",
         content: [
             {
                 type: "paragraph",
@@ -132,7 +131,6 @@ Now you just need to code the part where everything is rendered ...and the data 
     },
     {
         title: "Questionnaire 1",
-        type: "questionnaire",
         content: [
             {
                 text: "These are the initial instructions for filling out the questionnaire.",
