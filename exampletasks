@@ -25,7 +25,8 @@
 > How confident are you in your ability to do at least as well next time?
 
     $slider,
-    0, 100
+    0, 100,
+    Not at all confident, Extremely confident
 
 > How do you feel right now?
 

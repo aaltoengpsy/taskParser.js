@@ -64,9 +64,8 @@ You can find an example task/questionnaire file [here](./exampletasks).
 
 - `$` is used to indicate additional parameters when a paragraph is meant to act as a **question**. Currently available **question** types are `text`, `number`, `slider`, `option` and `likert`.
     - **Question**s of `range`, `option` and `likert` type should include additional parameters separated by commas (`,`).
-        - `range` requires a minimum and a maximum value.
         - There can be as many options to an `option` question as you'd like.
-        - `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
+        - `range` and `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
 
 ```md
 # Questionnaire 1
@@ -85,7 +84,7 @@ $likert, 1, 7, Strongly Disagree, Strongly Agree
 
 > How confident would you be in your ability to do at least as well next time?
 
-$slider, 0, 100
+$slider, 0, 100, Not at all confident, Very confident
 
 > (Optional) Provide general thoughts about the task.
 
@@ -165,7 +164,9 @@ Now you just need to code the part where everything is rendered ...and the data 
                 question: "Please rate the task:",
                 type: "slider",
                 min: 0,
-                max: 100
+                max: 100,
+                minLabel: 'Bad',
+                maxLabel: 'Good'
             }
         ]
     }

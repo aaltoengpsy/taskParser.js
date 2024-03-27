@@ -40,7 +40,7 @@ const loadTasks = () => {
         const questionType = rq.split('$')[1].trim().split(',')[0].trim()
 
         // Parse additional options if present (,)
-        if (questionType === 'likert') {
+        if (questionType === 'likert' || questionType === 'slider') {
           const params = rq.split('$')[1].trim().split(',').slice(1)
 
           return {
@@ -56,15 +56,6 @@ const loadTasks = () => {
             question: questionText,
             type: questionType,
             options: rq.split('$')[1].trim().split(',').slice(1).map((o) => o.trim())
-          }
-        } else if (questionType === 'slider') {
-          const params = rq.split('$')[1].trim().split(',').slice(1)
-
-          return {
-            question: questionText,
-            type: questionType,
-            min: parseInt(params[0].trim()),
-            max: parseInt(params[1].trim())
           }
         }
 
