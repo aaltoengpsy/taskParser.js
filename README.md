@@ -97,15 +97,62 @@ $text
 
 ## Usage
 
+In the following example we simply define the raw text content of our tasks in code.
+
 ```js
 import loadTasks from './taskParser.js'
 
-const tasks = loadTasks()
+const tasksRaw = `
+# Introduction
+
+> This is an introduction to your study / questionnaire / whatever.
+
+> Feel free to put something in here.
+
+# Questionnaire
+
+> Please enter your age
+
+$number
+
+> Please enter your profession
+
+$text
+
+> How experienced are you in filling out questionnaires?
+
+$likert, 1, 7, Not at all experienced, Very experienced
+`
+
+const tasks = loadTasks(tasksRaw)
 
 console.log(tasks)
 ```
 
 It's that easy!
+
+You can also choose to load the value of `tasksRaw` from a file, but the how you import the contents of the file will vary depending on your framework and whether you are loading the tasks on the server or client side.
+
+For example, in Vite, we would place our source file in the `public` directory at the root of the project.
+
+```js
+import tasksRaw from '/public/tasks?raw' // ?raw loads the raw text contents of the file
+
+...
+
+const tasks = loadTasks(tasksRaw)
+```
+
+If you want to load the tasks in server-side code, you can also use Node's `fs`.
+
+```js
+const fs = require('fs')
+const tasksRaw = fs.readFileSync('./exampletasks').toString()
+
+...
+
+const tasks = loadTasks(tasksRaw)
+```
 
 Now you just need to code the part where everything is rendered ...and the data is collected ...and saved 😄
 

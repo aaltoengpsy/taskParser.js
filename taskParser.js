@@ -1,5 +1,5 @@
 // Vite:
-import tasks from './exampletasks?raw'
+import exampletasks from './exampletasks?raw'
 
 /* 
 // Node in general, but this cannot be used in clientside code
@@ -7,7 +7,16 @@ const fs = require('fs')
 const tasks = fs.readFileSync('./exampletasks').toString()
 */
 
-const loadTasks = () => {
+/** Load & parse tasks
+ * @param tasks (optional) Raw text to parse tasks from. If left empty, example tasks from ./exampletasks will be used.
+ * @returns The parsed list of tasks as a JS array.
+ */
+const loadTasks = (tasks = undefined) => {
+  if (!tasks) {
+    console.log('Parameter tasks was not defined. Using example tasks.')
+    tasks = exampletasks
+  }
+
   try {
 
     // Identify steps (#)
