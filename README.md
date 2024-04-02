@@ -62,10 +62,12 @@ You can find an example task/questionnaire file [here](./exampletasks).
 > This is a second paragraph, maybe filling in some details regarding the image or the task instructions.
 ```
 
-- `$` is used to indicate additional parameters when a paragraph is meant to act as a **question**. Currently available **question** types are `text`, `number`, `slider`, `option` and `likert`.
-    - **Question**s of `range`, `option` and `likert` type should include additional parameters separated by commas (`,`).
-        - There can be as many options to an `option` question as you'd like.
-        - `range` and `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
+- `$` is used to indicate additional parameters when a paragraph is meant to act as a **question**. 
+    - The first parameter indicates the type of the **question**. This can essentially be anything you choose (e.g. `text`, `textarea`, `number`). 
+    - Further parameter parsing is currently available for **question** types `slider`, `option` and `likert`.
+        - These should include additional parameters separated by commas (`,`).
+            - There can be as many options to an `option` **question** as you'd like.
+            - `range` and `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
 
 ```md
 # Questionnaire 1
