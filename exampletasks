@@ -18,15 +18,15 @@
 
 > What did you think of the task?
 
-    $likert,
-    1, 7,
-    very bad, very good
+    $likert;
+    1; 7;
+    very bad; very good
 
 > How confident are you in your ability to do at least as well next time?
 
-    $slider,
-    0, 100,
-    Not at all confident, Extremely confident
+    $slider;
+    0; 100;
+    Not at all confident; Extremely confident
 
 > How do you feel right now?
 
@@ -48,10 +48,10 @@
 
 > Have you done something similar before?
 
-    $option,
-    yes,
-    no,
-    maybe,
+    $option;
+    yes;
+    no;
+    maybe;
     other
 
 > Do you have any general thoughts you'd like to share?

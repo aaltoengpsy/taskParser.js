@@ -46,11 +46,11 @@ const loadTasks = (tasks = undefined) => {
         }
 
         const questionText = rq.split('$')[0].trim()
-        const questionType = rq.split('$')[1].trim().split(',')[0].trim()
+        const questionType = rq.split('$')[1].trim().split(';')[0].trim()
 
         // Parse additional options if present (,)
         if (questionType === 'likert' || questionType === 'slider') {
-          const params = rq.split('$')[1].trim().split(',').slice(1)
+          const params = rq.split('$')[1].trim().split(';').slice(1)
 
           return {
             question: questionText,
@@ -64,7 +64,7 @@ const loadTasks = (tasks = undefined) => {
           return {
             question: questionText,
             type: questionType,
-            options: rq.split('$')[1].trim().split(',').slice(1).map((o) => o.trim())
+            options: rq.split('$')[1].trim().split(';').slice(1).map((o) => o.trim())
           }
         }
 

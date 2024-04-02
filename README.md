@@ -65,16 +65,16 @@ You can find an example task/questionnaire file [here](./exampletasks).
 - `$` is used to indicate additional parameters when a paragraph is meant to act as a **question**. 
     - The first parameter indicates the type of the **question**. This can essentially be anything you choose (e.g. `text`, `textarea`, `number`). 
     - Further parameter parsing is currently available for **question** types `slider`, `option` and `likert`.
-        - These should include additional parameters separated by commas (`,`).
+        - These should include additional parameters separated by semicolons (`;`).
             - There can be as many options to an `option` **question** as you'd like.
-            - `range` and `likert` parameters are: `minimum value, maximum value, minimum label, maximum label`
+            - `range` and `likert` parameters are: `minimum value; maximum value; minimum label; maximum label`
 
 ```md
 # Questionnaire 1
 
 > Were the instructions easy to understand?
 
-$option, Yes, No
+$option; Yes; No
 
 > How many times did you re-read the instructions?
 
@@ -82,11 +82,11 @@ $number
 
 > Indicate your agreement with the following statement: I would like to try again in the future.
 
-$likert, 1, 7, Strongly Disagree, Strongly Agree
+$likert; 1; 7; Strongly Disagree; Strongly Agree
 
 > How confident would you be in your ability to do at least as well next time?
 
-$slider, 0, 100, Not at all confident, Very confident
+$slider; 0; 100; Not at all confident; Very confident
 
 > (Optional) Provide general thoughts about the task.
 
@@ -121,7 +121,7 @@ $text
 
 > How experienced are you in filling out questionnaires?
 
-$likert, 1, 7, Not at all experienced, Very experienced
+$likert; 1; 7; Not at all experienced; Very experienced
 `
 
 const tasks = loadTasks(tasksRaw)
