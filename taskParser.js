@@ -18,71 +18,93 @@ const loadTasks = (tasks = undefined) => {
   }
 
   try {
+    // Identify sections (%%)
+    const rawSections = tasks.split('%%')
 
-    // Identify steps (#)
-    const rawSteps = tasks.split('#').slice(1)
+    const sections = []
+    
+    for (const section of rawSections.filter((rs) => rs.length !== 0)) {
+      const isRandom = section.split('#')[0].includes('RANDOMIZE')
 
-    // Parse steps
-    const steps = rawSteps.map((rs) => {
-      
-      // Parse step title
-      const stepTitle = rs.split('>')[0].trim()
+      // Identify pages (#)
+      const rawPages = section.split('#').slice(1)
 
-      // Parse step contents (>)
-      let stepContent = ''
-      // First, separate into paragraphs (incl. questions) (>)
-      const rawQuestions = rs.split('>').slice(1)
+      // Parse pages
+      const pages = rawPages.map((rs) => {
+        
+        // Parse page title
+        const pageTitle = rs.split('>')[0].trim()
 
-      // Parse question contents ($)
-      const questions = rawQuestions.map((rq) => {
-        // Parse images in questionnaires
-        if (rq.trim().startsWith('!')) {
-          return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}
-        }
+        // Then, begin parsing page contents
+        let pageContent = ''
+        // First, separate the paragraphs & questions (>)
+        const rawQuestions = rs.split('>').slice(1)
 
-        // Parse paragraphs in questionnaires
-        if (rq.split('$').length === 1) {
-          return { text: String(rq.trim()), type: 'paragraph'}
-        }
-
-        const questionText = rq.split('$')[0].trim()
-        const questionType = rq.split('$')[1].trim().split(';')[0].trim()
-
-        // Parse additional options if present (,)
-        if (questionType === 'likert' || questionType === 'slider') {
-          const params = rq.split('$')[1].trim().split(';').slice(1)
-
-          return {
-            question: questionText,
-            type: questionType,
-            min: parseInt(params[0].trim()),
-            max: parseInt(params[1].trim()),
-            minLabel: params[2].trim(),
-            maxLabel: params[3].trim()
+        // Parse paragraph contents
+        const questions = rawQuestions.map((rq) => {
+          // Parse images
+          if (rq.trim().startsWith('!')) {
+            return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}
           }
-        } else if (questionType === 'option') {
-          return {
-            question: questionText,
-            type: questionType,
-            options: rq.split('$')[1].trim().split(';').slice(1).map((o) => o.trim())
-          }
-        }
 
-        return { question: questionText, type: questionType }
+          // Parse paragraphs (no $ parameters present)
+          if (rq.split('$').length === 1) {
+            return { text: String(rq.trim()), type: 'paragraph'}
+          }
+
+          // Parse questions 
+          const questionText = rq.split('$')[0].trim()
+          const questionType = rq.split('$')[1].trim().split(';')[0].trim()
+
+          // Parse additional question options if present (separated by ;)
+          if (questionType === 'likert' || questionType === 'slider') {
+            const params = rq.split('$')[1].trim().split(';').slice(1)
+
+            return {
+              question: questionText,
+              type: questionType,
+              min: parseInt(params[0].trim()),
+              max: parseInt(params[1].trim()),
+              minLabel: params[2].trim(),
+              maxLabel: params[3].trim()
+            }
+          } else if (questionType === 'option') {
+            return {
+              question: questionText,
+              type: questionType,
+              options: rq.split('$')[1].trim().split(';').slice(1).map((o) => o.trim())
+            }
+          }
+
+          return { question: questionText, type: questionType }
+        })
+
+        pageContent = questions
+
+        return {
+          title: pageTitle,
+          content: pageContent
+        }
       })
 
-      stepContent = questions
-      
-
-      return {
-        title: stepTitle,
-        content: stepContent
+      if (isRandom) {
+        // Shuffle page order if the section has been designated as randomized
+        const shuffledPages = []
+        while (pages.length > 0) {
+          // Take a random element from the page array and add it to the shuffled array, repeat until no pages are left
+          shuffledPages.push(pages.splice(Math.floor(Math.random() * (pages.length)), 1)[0])
+        }
+        sections.push(shuffledPages)
+      } else {
+        // Otherwise just return the standard page order
+        sections.push(pages)
       }
-    })
+    }
 
     // Convert to JSON and back as a final "validation" step
-    const stepsAsJSON = JSON.stringify(steps)
-    return JSON.parse(stepsAsJSON)
+    // sections is an array of arrays of objects so we'll use flat() to reduce the hierarchy into an array of objects
+    const pagesAsJSON = JSON.stringify(sections.flat())
+    return JSON.parse(pagesAsJSON)
 
   } catch (e) {
     console.log(e)

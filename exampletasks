@@ -57,3 +57,19 @@
 > Do you have any general thoughts you'd like to share?
 
     $textarea
+
+%% RANDOMIZED
+
+# Random Question 1
+
+> What is your favourite color?
+
+$text
+
+# Random Question 2
+
+> What was the name of your childhood pet?
+
+$text
+
+%%

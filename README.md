@@ -8,7 +8,7 @@ Intended for when you need to integrate questionnaires into a web application. *
 
 You can find an example task/questionnaire file [here](./exampletasks).
 
-- `#` Marks the beginning of a **step**. Everything between this and the next `#` or `>` is considered the step title.
+- `#` Marks the beginning of a **page**. Everything between this and the next `#` or `>` is considered the page title.
 
 ```md
 # Task 1
@@ -94,6 +94,28 @@ $text
 ```
 
 > **N.B.** that you can add line breaks, tabs and spaces as you see fit to make the file more readable to you. These are trimmed out when parsing the file.
+
+### Randomized Sections
+
+You can randomize the order of a certain selection of pages by wrapping it in `%%` and using the `randomized` keyword. This can be handy for questionnaires where you need certain sections to always be in a set order, but would like to randomize the order of questions at other times.
+
+```md
+%% RANDOMIZED
+
+# Random 1
+
+...
+
+# Random 2
+
+...
+
+# Random 3
+
+%%
+```
+
+The order of the pages within the randomized section will then be randomized ***during parsing***, yielding a different order of pages every time `loadTasks()` is called. Note that there is currently no built-in way to identify which pages have been randomized after parsing.
 
 ## Usage
 
