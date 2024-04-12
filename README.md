@@ -115,8 +115,6 @@ You can randomize the order of a certain selection of pages by wrapping it in `%
 %%
 ```
 
-The order of the pages within the randomized section will then be randomized ***during parsing***, yielding a different order of pages every time `loadTasks()` is called. Note that there is currently no built-in way to identify which pages have been randomized after parsing.
-
 ## Usage
 
 In the following example we simply define the raw text content of our tasks in code.
@@ -178,11 +176,65 @@ const tasks = loadTasks(tasksRaw)
 
 Now you just need to code the part where everything is rendered ...and the data is collected ...and saved 😄
 
+### Handling Randomized Sections
+
+The order of the pages within each randomized section will be randomized ***during parsing***, yielding a different order of pages every time `loadTasks()` is called. Note that there is currently no built-in way to identify which pages have been randomized after parsing. However, the original order of the tasks (as defined in the source file) is preserved in the `sourceIndex` field:
+
+```js
+[
+    {
+        sourceIndex: 1,
+        title: "Random 2"
+    },
+    {
+        sourceIndex: 2,
+        title: "Random 3"
+    },
+    {
+        sourceIndex: 0,
+        title: "Random 1"
+    }
+]
+```
+
+You could then use `sourceIndex` so as not to mix up questionnaire responses from randomized sections. Here's a simplistic semi-pseudocode example:
+
+```js
+const tasks = loadTasks(```
+%% RANDOMIZE 
+# T1 
+> Q1 
+$text
+
+# T2 
+> Q2 
+$text
+```)
+
+/* Tasks is now either [{...T1}, {...T2}] or [{...T2}, {...T1}] */
+
+const responses = {}
+
+const saveResponse = (qid, response) => {
+    responses[qid] = response
+}
+
+for (t of tasks) {
+    for (q of questions) {
+        const response = askQuestion(q.question)
+        saveResponse(t.sourceIndex, response)
+    }
+}
+
+console.log(responses) // Should now print {"0": 'response_to_q1', "1": 'response_to_q2'}
+```
+
 ### Output
 
 ```js
 [
     {
+        sourceIndex: 0,
         title: "Task 1",
         content: [
             {
@@ -200,6 +252,7 @@ Now you just need to code the part where everything is rendered ...and the data 
         ]
     },
     {
+        sourceIndex: 1,
         title: "Questionnaire 1",
         content: [
             {

@@ -19,18 +19,27 @@ const loadTasks = (tasks = undefined) => {
 
   try {
     // Identify sections (%%)
-    const rawSections = tasks.split('%%')
+    const rawSections = tasks.split('%%').filter((rs) => rs.length !== 0)
 
     const sections = []
+    let pagesSoFar = 0 // Keep track of pages added so far (used to calculate source-based page index below)
     
-    for (const section of rawSections.filter((rs) => rs.length !== 0)) {
+    for (const section of rawSections) {
       const isRandom = section.split('#')[0].includes('RANDOMIZE')
 
       // Identify pages (#)
       const rawPages = section.split('#').slice(1)
-
+      
       // Parse pages
-      const pages = rawPages.map((rs) => {
+      const pages = rawPages.map((rs, pi) => {
+        /** pageIndex represents the index of the page within the context of the source file.
+        * Weed to use this because of randomized sections where page order may differ from the source,
+        * which could mean that different viewers get different page orders. If questions are involved,
+        * this would then mean that questionnaire responses get mixed up in logging. 
+        * 
+        * pi = page index within this section
+        * pagesSoFar = number of pages in all previous sections */
+        const pageIndex = pi + pagesSoFar
         
         // Parse page title
         const pageTitle = rs.split('>')[0].trim()
@@ -82,10 +91,13 @@ const loadTasks = (tasks = undefined) => {
         pageContent = questions
 
         return {
+          sourceIndex: pageIndex,
           title: pageTitle,
           content: pageContent
         }
       })
+
+      pagesSoFar += pages.length // Add the number of pages parsed to the count
 
       if (isRandom) {
         // Shuffle page order if the section has been designated as randomized
