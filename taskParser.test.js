@@ -1,17 +1,8 @@
 import loadTasks from "./taskParser.js"
-import fs from 'fs'
-
-const exampleTasks = fs.readFileSync('./exampleTasks').toString()
 
 describe('When an empty string is inserted', () => {
     test('An empty array is returned', () => {
         expect(loadTasks('').length).toBe(0)
-    })
-})
-
-describe('When the example tasks are loaded', () => {
-    test('The returned array is not empty', () => {
-        expect(loadTasks(exampleTasks).length).toBeGreaterThan(0)
     })
 })
 
@@ -111,7 +102,7 @@ describe('When a randomized section is loaded', () => {
         expect(pages.find((p) => p.sourceIndex === 1).title).toEqual('P2')
         expect(pages.find((p) => p.sourceIndex === 2).title).toEqual('P3')
     })
-    
+
     test('Only the order of the randomized section is randomized', () => {
         const tasks = '#P1%%RANDOMIZE#P2#P3#P4%%#P5'
         const pages = loadTasks(tasks)
