@@ -1,5 +1,7 @@
 # taskParser.js
 
+![Jest](https://github.com/aaltoengpsy/taskParser.js/actions/workflows/jest.yml/badge.svg)
+
 Parsing questionnaires to JS objects from human-readable markdown-like text files.
 
 Intended for when you need to integrate questionnaires into a web application. ***Just use Qualtrics / MS forms / Google forms unless you really need something custom!***
