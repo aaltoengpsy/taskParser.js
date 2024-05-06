@@ -48,13 +48,13 @@ describe('When a page is parsed', () => {
         expect(content[2].type).toBe('any')
     })
 
-    test.todo('Question types are assigned correctly') /* () => {
+    test('Question types are assigned correctly', () => {
         const tasks = '# > $likert > $slider > $option'
         const content = loadTasks(tasks)[0].content
         expect(content[0].type).toBe('likert')
         expect(content[1].type).toBe('slider')
         expect(content[2].type).toBe('option')
-    })*/
+    })
 })
 
 describe('When an image is parsed', () => {
@@ -82,7 +82,22 @@ describe('When a likert or a slider question is parsed', () => {
         expect(content[1].minLabel).toBe('LLL')
         expect(content[1].maxLabel).toBe('LLR')
     })
-    test.todo('If no parameters are given default values 1-10 are used')
+    test('If no parameters are given default values 1-10 are used', () => {
+        const tasks = '#>$slider>$likert'
+        const content = loadTasks(tasks)[0].content
+        expect(content[0].min).toBe(1)
+        expect(content[0].max).toBe(10)
+        expect(content[1].min).toBe(1)
+        expect(content[1].max).toBe(10)
+    })
+    test('If no parameters are given default labels \"min\" and \"max\" are used', () => {
+        const tasks = '#>$slider>$likert'
+        const content = loadTasks(tasks)[0].content
+        expect(content[0].minLabel).toBe('min')
+        expect(content[0].maxLabel).toBe('max')
+        expect(content[1].minLabel).toBe('min')
+        expect(content[1].maxLabel).toBe('max')
+    })
 })
 
 describe('When an option question is parsed', () => {
@@ -91,7 +106,11 @@ describe('When an option question is parsed', () => {
         const content = loadTasks(tasks)[0].content
         expect(content[0].options).toEqual(['A', 'B', 'C'])
     })
-    test.todo('If no parameters are given default values \"yes\" and \"no\" are used')
+    test('If no parameters are given default values \"Yes\" and \"No\" are used', () => {
+        const tasks = '#>$option'
+        const content = loadTasks(tasks)[0].content
+        expect(content[0].options).toEqual(['Yes', 'No'])
+    })
 })
 
 describe('When a randomized section is loaded', () => {

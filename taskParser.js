@@ -53,7 +53,20 @@ const loadTasks = (tasks) => {
 
           // Parse additional question options if present (separated by ;)
           if (questionType === 'likert' || questionType === 'slider') {
-            const params = rq.split('$')[1].trim().split(';').slice(1)
+            let params = rq.split('$')[1].trim().split(';')
+
+            if (params.length < 2) {
+              return {
+                question: questionText,
+                type: questionType,
+                min: 1,
+                max: 10,
+                minLabel: 'min',
+                maxLabel: 'max'
+              }
+            }
+
+            params = params.slice(1)
 
             return {
               question: questionText,
@@ -67,7 +80,9 @@ const loadTasks = (tasks) => {
             return {
               question: questionText,
               type: questionType,
-              options: rq.split('$')[1].trim().split(';').slice(1).map((o) => o.trim())
+              options: rq.split('$')[1].trim().split(';').length > 1 
+                ? rq.split('$')[1].trim().split(';').slice(1).map((o) => o.trim()) 
+                : ['Yes', 'No']
             }
           }
 
