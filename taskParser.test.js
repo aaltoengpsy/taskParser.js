@@ -7,13 +7,13 @@ describe('When an empty string is inserted', () => {
 })
 
 describe('When a task file is loaded', () => {
-    test('Pages are separated using #', () => {
-        const tasks = '####'
+    test('Pages are separated using single # symbols', () => {
+        const tasks = '# # # #'
         expect(loadTasks(tasks).length).toBe(4)
     })
 
     test('Page titles are assigned', () => {
-        const tasks = '# Title 1 ## Title 2'
+        const tasks = '# Title 1 # # Title 2'
         expect(loadTasks(tasks)[0].title).toBe('Title 1')
         expect(loadTasks(tasks)[1].title).toBe('')
         expect(loadTasks(tasks)[2].title).toBe('Title 2')
@@ -28,9 +28,9 @@ describe('When a task file is loaded', () => {
 })
 
 describe('When a page is parsed', () => {
-    test('The correct number of paragraphs is parsed', () => {
-        const tasks = '#>>>>'
-        expect(loadTasks(tasks)[0].content.length).toBe(4)
+    test('The correct number of content items is parsed', () => {
+        const tasks = '#>>>>## ###'
+        expect(loadTasks(tasks)[0].content.length).toBe(6)
     })
 
     test('Paragraph text is assigned correctly', () => {
@@ -38,6 +38,23 @@ describe('When a page is parsed', () => {
         expect(loadTasks(tasks)[0].content[0].text).toBe('P1')
         expect(loadTasks(tasks)[0].content[1].text).toBe('')
         expect(loadTasks(tasks)[0].content[2].text).toBe('P2')
+    })
+
+    test('Subheading text is assigned correctly', () => {
+        const tasks = '# ## H1 > P1 ### H2 > P2 > P3 ## H3'
+        const content = loadTasks(tasks)[0].content
+        expect(content[0].text).toBe('H1')
+        expect(content[2].text).toBe('H2')
+        expect(content[5].text).toBe('H3')
+    })
+
+    test('Subheading type (level) is assigned correctly', () => {
+        const tasks = '# ## H2 ### H3 ## H2-2 #### H4'
+        const content = loadTasks(tasks)[0].content
+        expect(content[0].type).toBe('h2')
+        expect(content[1].type).toBe('h3')
+        expect(content[2].type).toBe('h2')
+        expect(content[3].type).toBe('h4')
     })
 
     test('Core types are assigned correctly', () => {

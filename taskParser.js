@@ -11,10 +11,10 @@ const loadTasks = (tasks) => {
     let pagesSoFar = 0 // Keep track of pages added so far (used to calculate source-based page index below)
     
     for (const section of rawSections) {
-      const isRandom = section.split('#')[0].includes('RANDOMIZE')
+      const isRandom = section.split(/(?<!#)#{1}(?!#)/)[0].includes('RANDOMIZE')
 
       // Identify pages (#)
-      const rawPages = section.split('#').slice(1)
+      const rawPages = section.split(/(?<!#)#{1}(?!#)/).slice(1)
       
       // Parse pages
       const pages = rawPages.map((rs, pi) => {
@@ -28,15 +28,22 @@ const loadTasks = (tasks) => {
         const pageIndex = pi + pagesSoFar
         
         // Parse page title
-        const pageTitle = rs.split('>')[0].trim()
+        const pageTitle = rs.split(/(?<!#)#{2,}(?!#)|>/)[0].trim()
 
         // Then, begin parsing page contents
         let pageContent = ''
-        // First, separate the paragraphs & questions (>)
-        const rawQuestions = rs.split('>').slice(1)
 
-        // Parse paragraph contents
-        const questions = rawQuestions.map((rq) => {
+        // First, separate the subheadings (start with #) and paragraphs & questions (>)
+        const rawQuestions = rs.split(/(?<!#)#{1}|>/).slice(1)
+
+        // Parse each piece of content
+        const questions = rawQuestions.map((rq, i) => {
+          // Parse subheadings
+          if (rq.startsWith('#')) {
+            const subHLevel = rq.match(/(?<!#)#{1,}|>/)[0].length + 1
+            return { text: String(rq.split(/(?<!#)#{1,}|>/)[1].trim()), type: `h${subHLevel}`}
+          }
+
           // Parse images
           if (rq.trim().startsWith('!')) {
             return { url: String(rq.split('(')[1].split(')')[0].trim()), type: 'image'}

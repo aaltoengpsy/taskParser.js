@@ -10,7 +10,7 @@ Intended for when you need to integrate questionnaires into a web application. *
 
 You can find an example task/questionnaire file [here](./exampletasks).
 
-- `#` Marks the beginning of a **page**. Everything between this and the next `#` or `>` is considered the page title.
+- A single hash symbol (`#`) Marks the beginning of a **page**. Everything between this and the first content item (or page) is considered the page title.
 
 ```md
 # Task 1
@@ -18,6 +18,20 @@ You can find an example task/questionnaire file [here](./exampletasks).
 # Questionnaire 1
 
 # Task 2: Instructions
+```
+
+- Two or more hash symbols (i.e. `##`, `###`, etc.) can, like in markdown, be used for subheadings within a page. These are assigned a type (the heading's level) based on the number of hashes.
+
+```md
+# Page 1 Title
+
+## Subheading Level 2
+
+### Subheading Level 3
+
+#### Subheading Level 4
+
+# Page 2 Title
 ```
 
 - `>` Marks a **paragraph** (or a **question** if additional parameters, explained below, are included)
@@ -232,7 +246,7 @@ for (t of tasks) {
 console.log(responses) // Should now print {"0": 'response_to_q1', "1": 'response_to_q2'}
 ```
 
-### Output
+### Example Output
 
 ```js
 [
@@ -240,6 +254,10 @@ console.log(responses) // Should now print {"0": 'response_to_q1', "1": 'respons
         sourceIndex: 0,
         title: "Task 1",
         content: [
+            {
+                type: "h2",
+                text: "This is a subheading."
+            },
             {
                 type: "paragraph",
                 text: "This is a paragraph."
