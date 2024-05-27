@@ -81,7 +81,8 @@ const loadTasks = (tasks) => {
               min: parseInt(params[0].trim()),
               max: parseInt(params[1].trim()),
               minLabel: params[2].trim(),
-              maxLabel: params[3].trim()
+              maxLabel: params[3].trim(),
+              additionalParams: [...params.slice(4).map((p) => p.trim())]
             }
           } else if (questionType === 'option') {
             return {

@@ -115,6 +115,17 @@ describe('When a likert or a slider question is parsed', () => {
         expect(content[1].minLabel).toBe('min')
         expect(content[1].maxLabel).toBe('max')
     })
+    test('Additional parameters after the initial 4 are passed on as a list', () => {
+        const tasks = '#>$slider;1;10;LL;LR;P>$likert;1;10;LL;LR;P;A;B'
+        const content = loadTasks(tasks)[0].content
+        console.log(content[0].additionalParams)
+        expect(content[0].additionalParams.length).toEqual(1)
+        expect(content[0].additionalParams[0]).toBe('P')
+        expect(content[1].additionalParams.length).toEqual(3)
+        expect(content[1].additionalParams[0]).toBe('P')
+        expect(content[1].additionalParams[1]).toBe('A')
+        expect(content[1].additionalParams[2]).toBe('B')
+    })
 })
 
 describe('When an option question is parsed', () => {

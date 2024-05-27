@@ -84,7 +84,8 @@ You can find an example task/questionnaire file [here](./exampletasks).
         - These should include additional parameters separated by semicolons (`;`).
             - There can be as many options to an `option` **question** as you'd like.
             - `range` and `likert` parameters are: `minimum value; maximum value; minimum label; maximum label`
-            - If no parameters are provided, `slider` and `likert` questions will default to `1; 10; min; max`, while options will default to `Yes; No`
+                - If no parameters are provided, `slider` and `likert` questions will default to `1; 10; min; max`, while options will default to `Yes; No`
+                - You can also indicate an unlimited number of additional parameters for `slider` and `likert` **question**s after the initial 4; e.g. `$slider; minValue; maxValue; minLabel; maxLabel; additionalParam_1; additionalParam_2`
 
 ```md
 # Questionnaire 1
